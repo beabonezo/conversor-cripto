@@ -1,15 +1,15 @@
 import streamlit as st
+from supabase import create_client
 from moedas_suportadas import moedas
 from cotacao import obter_cotacao
+from dotenv import load_dotenv
+import os
 
+# configuração da página
 st.set_page_config(page_title="Conversor Cripto", page_icon="💰", layout="centered")
 
 st.markdown("""
     <style>
-    body {
-        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-        color: white;
-    }
     .stTextInput label, .stNumberInput label, .stSelectbox label {
         color: #b8b8ff !important;
     }
@@ -27,6 +27,31 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# conexão com supabase — uma só vez
+load_dotenv()
+URL = os.getenv("SUPABASE_URL")
+KEY = os.getenv("SUPABASE_KEY")
+supabase = create_client(URL, KEY)
+
+# tela de login — bloqueia o resto do app até autenticar
+if "usuario" not in st.session_state:
+    st.title("Login")
+    email = st.text_input("Email")
+    senha = st.text_input("Senha", type="password")
+
+    if st.button("Entrar"):
+        try:
+            resposta = supabase.auth.sign_in_with_password({
+                "email": email,
+                "password": senha
+            })
+            st.session_state["usuario"] = resposta.user
+            st.rerun()
+        except:
+            st.error("Email ou senha incorretos")
+    st.stop()
+
+# app principal — só chega aqui se estiver logado
 st.title("💰 Conversor de Criptomoedas para Reais (BRL)")
 st.write("Converta rapidamente suas criptomoedas favoritas com dados em tempo real da API CoinGecko.")
 
@@ -44,40 +69,17 @@ if st.button("Converter"):
                 <p>1 {moedas[cripto]} = R$ {cotacao:,.2f}</p>
             </div>
             """, unsafe_allow_html=True)
+
+            try:
+                supabase.table("conversoes").insert({
+                    "user_id": st.session_state["usuario"].id,
+                    "moeda_origem": "BRL",
+                    "moeda_destino": moedas[cripto],
+                    "valor_origem": quantidade,
+                    "valor_resultado": valor_em_reais
+                }).execute()
+                st.success("Conversão salva!")
+            except Exception as e:
+                st.warning(f"Erro ao salvar: {e}")
         else:
-            st.error("Não foi possível obter a cotação. Verifique a conexão ou o nome da moeda.")
-
-def main():
-    print("\n===== CONVERSOR DE MOEDA CRIPTO -> REAL =====\n")
-
-    while True:
-        print("Moedas disponíveis:")
-        for nome, sigla in moedas.items():
-            print(f" --> {nome.capitalize()} = ({sigla})")
-
-        cripto = input("Qual moeda deseja converter?:").lower()
-        if cripto not in moedas:
-            print("moeda não encontrada.")
-            continue
-        
-        try:
-            quantidade = float(input("Digite a quantidade que deseja converter:"))
-        except ValueError:
-            print("Por favor, insira um número válido")
-            continue
-        
-        cotacao = obter_cotacao(cripto)
-        if cotacao:
-            valor_em_reais = quantidade * cotacao
-            print(f"{quantidade} de {moedas[cripto]} equivalem a R$ {valor_em_reais:,.2f}")
-        else:
-            print("Não foi possível obter a cotação.")
-            continue
-
-        repetir = input("Deseja converter outra moeda? [S/N]:").lower()
-        if repetir != "s":
-            print("Obrigada por usar o conversor")
-            break
-
-if __name__ == "__main__":
-    main()
+            st.error("Não foi possível obter a cotação.")
