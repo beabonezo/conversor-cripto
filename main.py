@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 from supabase import create_client
 from moedas_suportadas import moedas
 from cotacao import obter_cotacao
@@ -60,17 +61,23 @@ quantidade = st.number_input("Digite a quantidade:", min_value=0.0, format="%.6f
 
 if st.button("Converter"):
     with st.spinner("Buscando cotação..."):
-        cotacao = obter_cotacao(cripto)
-        if cotacao:
-            valor_em_reais = quantidade * cotacao
-            st.markdown(f"""
-            <div class="result">
-                <h3>💎 {quantidade} {moedas[cripto]} = R$ {valor_em_reais:,.2f}</h3>
-                <p>1 {moedas[cripto]} = R$ {cotacao:,.2f}</p>
-            </div>
-            """, unsafe_allow_html=True)
+        try:
+            resposta = requests.get(f"http://localhost:8000/preco/{cripto}")
+            dados = resposta.json()
 
-            try:
+            if "erro" in dados:
+                st.error("Moeda não encontrada.")
+            else:
+                cotacao = dados["preco_brl"]
+                valor_em_reais = quantidade * cotacao
+
+                st.markdown(f"""
+                <div class="result">
+                    <h3>💎 {quantidade} {moedas[cripto]} = R$ {valor_em_reais:,.2f}</h3>
+                    <p>1 {moedas[cripto]} = R$ {cotacao:,.2f}</p>
+                </div>
+                """, unsafe_allow_html=True)
+
                 supabase.table("conversoes").insert({
                     "user_id": st.session_state["usuario"].id,
                     "moeda_origem": "BRL",
@@ -79,7 +86,6 @@ if st.button("Converter"):
                     "valor_resultado": valor_em_reais
                 }).execute()
                 st.success("Conversão salva!")
-            except Exception as e:
-                st.warning(f"Erro ao salvar: {e}")
-        else:
-            st.error("Não foi possível obter a cotação.")
+
+        except Exception as e:
+            st.error(f"Erro: {e}")

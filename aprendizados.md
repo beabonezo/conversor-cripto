@@ -42,3 +42,18 @@ SEMANA 02 - Banco de Dados
 ## Query ou queries em plural é uma consulta que fazemos em um banco de dados. Exemplo: se pedimos uma query de conversões, estamos pedindo para consultar as conversões, tipo uma busca.
 
 ## Os termos do SQL levam em consideração os mesmos termos do protocolo HTTP, de get, post, patch, delete, etc.
+
+SEMANA 03 - Login e autenticação
+
+# O sistema de login funciona com uma autenticação. Essa autenticação possui duas camadas:
+
+1 - identidade: onde é gerado o UUID de cada usuário
+2 - isolamento: isola os dados de cada usuário onde ele consegue visualizar apenas seu próprio dado
+
+Ao cadastrar um usuário na tabela do supabase, o supabase cria uma tabela interna chamada auth.users onde ele gera o UUID do usuário e criptografa a senha do usuario automaticamente.
+
+# RLS - Row Line Security - Segurança a nível de linha.
+
+É uma camada extra de segurança utilizada no próprio banco de dados, vai além do código. Códigos podem falhar, ter bugs, erros de lógica, e isso atrapalharia o funcionamento do método de segurança RLS, por isso, usa-se diretamente no BD.
+
+- com esse método, quando o usuário faz uma requisição, o banco de dadso checa linha por linha se o usuário possui permissão para tal requisição.
