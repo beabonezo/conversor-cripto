@@ -1,0 +1,331 @@
+/* globals.css — design system do Conversor de Criptomoedas */
+
+/* Fonte moderna do Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* ─── Reset e base ─────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Paleta principal — tons violeta/índigo */
+  --color-bg: #0d0f1a;
+  --color-bg-card: rgba(255, 255, 255, 0.05);
+  --color-bg-card-hover: rgba(255, 255, 255, 0.08);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-focus: rgba(162, 155, 254, 0.6);
+
+  --color-primary: #a29bfe;
+  --color-primary-dark: #6c5ce7;
+  --color-primary-glow: rgba(162, 155, 254, 0.3);
+
+  --color-accent: #fd79a8;
+  --color-success: #55efc4;
+  --color-error: #ff7675;
+  --color-warning: #fdcb6e;
+
+  --color-text: #dfe6e9;
+  --color-text-muted: #74b9ff;
+  --color-text-dim: rgba(255, 255, 255, 0.45);
+
+  /* Tipografia */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Sombras e bordas */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 40px rgba(162, 155, 254, 0.15);
+}
+
+html,
+body {
+  height: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Layout principal ─────────────────────────────────────── */
+.main-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  gap: 2rem;
+
+  /* Gradiente radial de fundo */
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108, 92, 231, 0.18) 0%, transparent 70%),
+    var(--color-bg);
+}
+
+/* ─── Header ───────────────────────────────────────────────── */
+.page-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  box-shadow: 0 0 24px var(--color-primary-glow);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+.page-title {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 30%, var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+.page-subtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-dim);
+  letter-spacing: 0.3px;
+}
+
+/* ─── Card do conversor ────────────────────────────────────── */
+.converter-card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-card), var(--shadow-glow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: box-shadow 0.3s ease;
+}
+
+.converter-card:hover {
+  box-shadow: var(--shadow-card), 0 0 60px rgba(162, 155, 254, 0.2);
+}
+
+/* ─── Formulário ───────────────────────────────────────────── */
+.converter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.field-select,
+.field-input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.field-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a29bfe' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.field-select:focus,
+.field-input:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.field-input::placeholder {
+  color: var(--color-text-dim);
+}
+
+/* Remove setas do input number */
+.field-input::-webkit-inner-spin-button,
+.field-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+.field-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ─── Botão converter ──────────────────────────────────────── */
+.btn-convert {
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
+  transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(108, 92, 231, 0.4);
+  letter-spacing: 0.3px;
+}
+
+.btn-convert:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(108, 92, 231, 0.5);
+}
+
+.btn-convert:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-convert:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+/* Spinner animado */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Caixa de erro ────────────────────────────────────────── */
+.error-box {
+  margin-top: 1rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 118, 117, 0.1);
+  border: 1px solid rgba(255, 118, 117, 0.3);
+  color: var(--color-error);
+  font-size: 0.9rem;
+  animation: fadeIn 0.3s ease;
+}
+
+/* ─── Caixa de resultado ───────────────────────────────────── */
+.result-box {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(108, 92, 231, 0.15), rgba(162, 155, 254, 0.08));
+  border: 1px solid rgba(162, 155, 254, 0.25);
+  text-align: center;
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.result-main {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.result-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.result-sub {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+}
+
+/* ─── Footer ───────────────────────────────────────────────── */
+.page-footer {
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+  text-align: center;
+}
+
+.footer-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.footer-link:hover {
+  opacity: 0.75;
+  text-decoration: underline;
+}
+
+/* ─── Animações ────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Responsividade ───────────────────────────────────────── */
+@media (max-width: 520px) {
+  .converter-card {
+    padding: 1.5rem 1.25rem;
+  }
+}

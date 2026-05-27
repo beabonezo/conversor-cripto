@@ -1,4 +1,22 @@
-````
+# Dependências
+node_modules/
+.venv/
+
+# Next.js
+.next/
+out/
+
+# Ambiente
 .env
-.venv
+.env.local
+.env*.local
+
+# Python (arquivos legados — não fazem parte da nova stack)
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Sistema
+.DS_Store
+Thumbs.db

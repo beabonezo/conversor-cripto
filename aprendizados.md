@@ -57,3 +57,14 @@ Ao cadastrar um usuário na tabela do supabase, o supabase cria uma tabela inter
 É uma camada extra de segurança utilizada no próprio banco de dados, vai além do código. Códigos podem falhar, ter bugs, erros de lógica, e isso atrapalharia o funcionamento do método de segurança RLS, por isso, usa-se diretamente no BD.
 
 - com esse método, quando o usuário faz uma requisição, o banco de dadso checa linha por linha se o usuário possui permissão para tal requisição.
+
+SEMANA 04 - FASTAPI
+
+# FastAPI é um framework público com sua base e nós que criamos a lógica utilizada com o framework.
+
+De pequenos sistemas a grandes sistemas, podemos e devemos usar esse framework para garantir mais organização, arquitetura limpa e garantir que cada responsabilidade dentro do sistema possui sua própria API entre front end e back end, facilitando a comunicação entre os times responsáveis para cada responsabilidade.
+
+Cada API possui uma porta diferente e elas se comunicam via protocolo HTTP. Uma API não tem relação direta com outra, ou seja, se uma parar de funcionar por erro lógico do sistema, a outra se mantém, o que vai acontecer é que a funcionalidade que dependia da API que parou de funcionar, vai receber erros na chamada dessa API. A chamada poderá ser feita, mas não com sucesso.
+
+
+Além de facilitar a comunicação entre times e front end e back end dos sistemas, a FastAPI é usada para criar diversas API dentro de um sistema. Com ela, podemos escalar os sistemas, mudar stack utilizada do front end por exemplo, sem precisar interferir na API pois ela está sendo usada de forma organizada e separada do front.
